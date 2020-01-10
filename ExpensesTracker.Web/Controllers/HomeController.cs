@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ExpensesTracker.Web.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace ExpensesTracker.Web.Controllers
 {
@@ -18,9 +20,35 @@ namespace ExpensesTracker.Web.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task< IActionResult> Index()
         {
-            return View();
+            List<Budget> students = new List<Budget>();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:60375/api/");
+                //HTTP GET
+                var responseTask = client.GetAsync("budget");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = await result.Content.ReadAsStringAsync();
+
+                    students = JsonConvert.DeserializeObject<List<Budget>>(readTask); ;// readTask.Result;
+                }
+                else //web api sent error response 
+                {
+                    //log response status here..
+
+                    students = new List<Budget>();
+
+                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                }
+            }
+            return View(students);
+
         }
 
         public IActionResult Privacy()
@@ -28,10 +56,11 @@ namespace ExpensesTracker.Web.Controllers
             return View();
         }
 
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new List<Budget> { new Budget { Name = "TESt" } }.Where(c=>c.Name!=null));
         }
     }
 }
