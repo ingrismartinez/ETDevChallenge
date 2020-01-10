@@ -36,7 +36,7 @@ namespace ExpensesTracker.Web.Controllers
                 {
                     var readTask = await result.Content.ReadAsStringAsync();
 
-                    students = JsonConvert.DeserializeObject<List<Budget>>(readTask); ;// readTask.Result;
+                    students = JsonConvert.DeserializeObject<List<Budget>>(readTask); 
                 }
                 else //web api sent error response 
                 {
