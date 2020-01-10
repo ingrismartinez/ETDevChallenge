@@ -27,7 +27,6 @@ namespace ExpensesTracker.Services
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers(); 
-
             services.AddDbContext<ExpensesTrackerContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ExpensesTrackerContext")));
         }

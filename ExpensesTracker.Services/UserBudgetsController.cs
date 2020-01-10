@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ExpensesTracker.Services.Entities;
+using ExpensesTracker.Services.AppServices;
+using ExpensesTracker.Services.DomainServices;
+using ExpensesTracker.Services.Requests;
+using ExpensesTracker.Services.Responses.Budget;
 
 namespace ExpensesTracker.Services
 {
@@ -14,17 +18,19 @@ namespace ExpensesTracker.Services
     public class UserBudgetsController : ControllerBase
     {
         private readonly ExpensesTrackerContext _context;
+        private readonly UserBudgetsAppService _userBudgetAppService;
 
         public UserBudgetsController(ExpensesTrackerContext context)
         {
             _context = context;
+            _userBudgetAppService = new UserBudgetsAppService(_context, new UserBudgetsDomainService());
         }
 
         // GET: api/UserBudgets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserBudget>>> GetUserBudget()
+        public async Task<ActionResult<MonthBudgetResponse>> GetUserBudget([FromRoute]MonthBudgetRequest request)
         {
-            return await _context.UserBudget.ToListAsync();
+            return await _userBudgetAppService.GetMyCurrentMonthBudget(request);
         }
 
         // GET: api/UserBudgets/5

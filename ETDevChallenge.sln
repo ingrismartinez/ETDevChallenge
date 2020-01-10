@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpensesTracker.Web", "ExpensesTracker.Web\ExpensesTracker.Web.csproj", "{BAF0B84B-62BB-4E0F-B4B5-33059B04B52B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpensesTracker.Services", "ExpensesTracker.Services\ExpensesTracker.Services.csproj", "{597B8CE2-5E50-4959-86A2-3091EA28731A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpensesTracker.Services", "ExpensesTracker.Services\ExpensesTracker.Services.csproj", "{597B8CE2-5E50-4959-86A2-3091EA28731A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpensesTracker.Services.Tests", "ExpensesTracker.Services.Tests\ExpensesTracker.Services.Tests.csproj", "{0B8DB6D6-AE8A-444B-8C2D-8177BF7BE74A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpensesTracker.Services.Tests", "ExpensesTracker.Services.Tests\ExpensesTracker.Services.Tests.csproj", "{0B8DB6D6-AE8A-444B-8C2D-8177BF7BE74A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
