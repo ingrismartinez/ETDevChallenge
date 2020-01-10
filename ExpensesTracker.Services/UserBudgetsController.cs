@@ -13,7 +13,7 @@ using ExpensesTracker.Services.Responses.Budget;
 
 namespace ExpensesTracker.Services
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UserBudgetsController : ControllerBase
     {

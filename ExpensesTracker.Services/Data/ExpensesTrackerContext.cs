@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ExpensesTracker.Services.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ExpensesTracker.Services.Data.Maps;
 
 public class ExpensesTrackerContext : DbContext
 {
@@ -14,6 +15,8 @@ public class ExpensesTrackerContext : DbContext
     }
 
     public DbSet<ExpensesTracker.Services.Entities.UserBudget> UserBudget { get; set; }
+    public DbSet<ExpensesTracker.Services.Entities.BudgetDetail> BudgetDetail { get; set; }
+    public DbSet<ExpensesTracker.Services.Entities.ExpenseCategory> ExpenseCategory { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,5 +24,7 @@ public class ExpensesTrackerContext : DbContext
 
         //Property Configurations
         modelBuilder.ApplyConfiguration(new MapUserBudget());
+        modelBuilder.ApplyConfiguration(new MapBudgetDetail());
+        modelBuilder.ApplyConfiguration(new MapExpenseCategory());
     }
 }
