@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETDevChallenge", "ETDevChallenge.csproj", "{CF6E98B9-DDC4-4B60-84B8-06ECAFF7E1D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETDevChallenge", "ETDevChallenge.csproj", "{CF6E98B9-DDC4-4B60-84B8-06ECAFF7E1D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpensesTracker.Web", "ExpensesTracker.Web\ExpensesTracker.Web.csproj", "{BAF0B84B-62BB-4E0F-B4B5-33059B04B52B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{CF6E98B9-DDC4-4B60-84B8-06ECAFF7E1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF6E98B9-DDC4-4B60-84B8-06ECAFF7E1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF6E98B9-DDC4-4B60-84B8-06ECAFF7E1D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAF0B84B-62BB-4E0F-B4B5-33059B04B52B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAF0B84B-62BB-4E0F-B4B5-33059B04B52B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAF0B84B-62BB-4E0F-B4B5-33059B04B52B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAF0B84B-62BB-4E0F-B4B5-33059B04B52B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
