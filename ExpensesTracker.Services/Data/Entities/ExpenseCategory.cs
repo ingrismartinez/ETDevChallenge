@@ -10,5 +10,6 @@ namespace ExpensesTracker.Services.Entities
         public int UId { get; set; }
         public string Name { get; set; }
         public bool IsDefault { get; set; }
+        public string OwnerId { get; set; }
     }
 }

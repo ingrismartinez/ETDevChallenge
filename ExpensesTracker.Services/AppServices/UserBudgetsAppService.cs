@@ -62,7 +62,7 @@ namespace ExpensesTracker.Services.AppServices
             return currentMonth.BudgetDetails.Select(c => new BudgetCategoryDto
             {
                 CategoryId = c.CategoryId,
-                Name = c.ExpenseCategory.Name,
+                Name = c.ExpenseCategory?.Name,
                 Percentaje= c.Percentage,
             });
         }

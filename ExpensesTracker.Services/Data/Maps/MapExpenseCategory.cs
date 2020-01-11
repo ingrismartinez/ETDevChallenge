@@ -17,6 +17,7 @@ namespace ExpensesTracker.Services.Data.Maps
             builder.Property(c => c.UId).HasColumnName("UId").IsRequired();
             builder.Property(c => c.Name).HasColumnName("Name").IsRequired();
             builder.Property(c => c.IsDefault).HasColumnName("IsDefault").IsRequired();
+            builder.Property(c => c.OwnerId).HasColumnName("OwnerId");
         }
     }
 }

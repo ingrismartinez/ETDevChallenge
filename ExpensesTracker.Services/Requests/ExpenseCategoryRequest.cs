@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace ExpensesTracker.Services.Requests
 {
-    public class MonthBudgetRequest:UserRequest
+    public class ExpenseCategoryRequest:UserRequest
     {
+        public string CategoryName { get; set; }
+
     }
 }
