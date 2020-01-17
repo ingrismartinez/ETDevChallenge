@@ -17,5 +17,9 @@ namespace ExpensesTracker.Services.Data.Entities
         {
             return new ExpenseCategory { IsDefault = false, Name = categoryName, OwnerId = userId };
         }
+        public static string MonthName(this DateTime date)
+        {
+            return $"{date.ToString("MMMM")} {date.Year}";
+        }
     }
 }

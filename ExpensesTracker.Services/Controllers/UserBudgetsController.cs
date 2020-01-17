@@ -28,9 +28,9 @@ namespace ExpensesTracker.Services
 
         // GET: api/UserBudgets
         [HttpGet]
-        public async Task<ActionResult<MonthBudgetResponse>> GetUserBudget([FromRoute]MonthBudgetRequest request)
+        public async Task<ActionResult<MonthBudgetResponse>> GetUserBudget(string userId)
         {
-            return await _userBudgetAppService.GetMyCurrentMonthBudget(request);
+            return await _userBudgetAppService.GetMyCurrentMonthBudget(new UserRequest { UserId = userId });
         }
 
         // GET: api/UserBudgets/5

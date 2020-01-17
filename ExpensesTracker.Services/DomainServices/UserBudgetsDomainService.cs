@@ -16,28 +16,32 @@ namespace ExpensesTracker.Services.DomainServices
             monthEndingDate = monthBeginningDate.AddMonths(1).AddDays(-1);
         }
 
-        internal UserBudget CreateDefaultBudget(string userId)
+        internal UserBudget CreateDefaultBudget(string userId,List<ExpenseCategory> categories)
         {
             var today = DateTime.Today;
             var currentMonth = today.Month;
             var monthBeginningDate = new DateTime(today.Year, currentMonth, 1);
             var monthEndingDate = monthBeginningDate.AddMonths(1).AddDays(-1);
 
-            return new UserBudget
+            var budget = new UserBudget
             {
                 UserId = userId,
                 CurrencySign = "$",
                 StartDate = monthBeginningDate,
                 EndDate = monthEndingDate,
                 Amount = 100,
-                BudgetDetails = new List<BudgetDetail>()
-                {
-                    new BudgetDetail
-                    {
-
-                    }
-                }
             };
+            var percentage = (decimal)100 / categories.Count;
+            budget.BudgetDetails = categories.Select(c => new BudgetDetail
+            {
+                UserBudget = budget,
+                CategoryId = c.UId,
+                Percentage = percentage,
+                Amount = budget.Amount * percentage,
+                ExpenseCategory = c,
+            }).ToList();
+
+            return budget;
         }
     }
 }

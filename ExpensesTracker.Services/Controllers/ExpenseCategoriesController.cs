@@ -37,7 +37,7 @@ namespace ExpensesTracker.Services.Controllers
         {
            return await _expensesCategoriesAppService.CreateDefaultCategory(request);
         }
-        // POST: api/ExpenseCategories/add-default
+        // POST: api/ExpenseCategories/add-custom
         [HttpPost("add-custom")]
         public async Task<ActionResult<ResponseBase>> AddCustom([FromBody] ExpenseCategoryRequest request)
         {

@@ -1,4 +1,5 @@
-﻿using ExpensesTracker.Services.DomainServices;
+﻿using ExpensesTracker.Services.Data.Entities;
+using ExpensesTracker.Services.DomainServices;
 using ExpensesTracker.Services.Entities;
 using ExpensesTracker.Services.Requests;
 using ExpensesTracker.Services.Responses.Budget;
@@ -22,7 +23,7 @@ namespace ExpensesTracker.Services.AppServices
             _budgetDomainService = budgetDomainService;
 
         }
-        public async Task<MonthBudgetResponse> GetMyCurrentMonthBudget(MonthBudgetRequest request)
+        public async Task<MonthBudgetResponse> GetMyCurrentMonthBudget(UserRequest request)
         {
             var userId = request.UserId;
             DateTime monthBeginningDate;
@@ -33,14 +34,20 @@ namespace ExpensesTracker.Services.AppServices
             var userBudgets = await _context.UserBudget.Where(c => c.UserId == userId).ToListAsync();
             var currentMonth = userBudgets.FirstOrDefault(c =>
                            c.StartDate >= monthBeginningDate && c.EndDate <= monthEndingDate);
+            var categories = await _context.ExpenseCategory.Where(c => c.IsDefault || c.OwnerId == userId).ToListAsync();
 
             var defaultTemplate = currentMonth == null;
             if (defaultTemplate)
             {
-                currentMonth = _budgetDomainService.CreateDefaultBudget(request.UserId);
+                currentMonth = _budgetDomainService.CreateDefaultBudget(request.UserId,categories);
             }
 
+            return MapUserBudgetToResponse(currentMonth, defaultTemplate);
 
+        }
+
+        private static MonthBudgetResponse MapUserBudgetToResponse(UserBudget currentMonth, bool defaultTemplate)
+        {
             return new MonthBudgetResponse
             {
                 IsProposedBudget = defaultTemplate,
@@ -49,17 +56,15 @@ namespace ExpensesTracker.Services.AppServices
                     Amount = currentMonth.Amount,
                     Currency = currentMonth.CurrencySign,
                     Year = currentMonth.EndDate.Year,
-                    Name = currentMonth.StartDate.Month.ToString(),
+                    Name = currentMonth.StartDate.MonthName(),
                     BudgetCategory = MapBudgetCategories(currentMonth)
                 }
             };
-
-
         }
 
         private static IEnumerable<BudgetCategoryDto> MapBudgetCategories(UserBudget currentMonth)
         {
-            return currentMonth.BudgetDetails.Select(c => new BudgetCategoryDto
+            return currentMonth.BudgetDetails?.Select(c => new BudgetCategoryDto
             {
                 CategoryId = c.CategoryId,
                 Name = c.ExpenseCategory?.Name,
