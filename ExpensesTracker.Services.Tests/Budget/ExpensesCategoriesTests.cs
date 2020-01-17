@@ -20,7 +20,7 @@ namespace ExpensesTracker.Services.Tests.Budget
         [TestCategory("UnitTest")]
         public void EmptyCategoryNameNotValid()
         {
-            var newCategory = ExpenseCategoryFactory.DefaultCategory(string.Empty);
+            var newCategory = ExpensesTrackerFactory.DefaultCategory(string.Empty);
             var validation = _DomainService.IsValidNewCategory(newCategory, null);
 
             Assert.IsFalse(validation.IsValid());
@@ -30,7 +30,7 @@ namespace ExpensesTracker.Services.Tests.Budget
         [TestCategory("UnitTest")]
         public void CantAddDuplicateMeaning()
         {
-            var newCategory = ExpenseCategoryFactory.DefaultCategory("Coffee");
+            var newCategory = ExpensesTrackerFactory.DefaultCategory("Coffee");
             var systemCategoies = new List<ExpenseCategory>() { new ExpenseCategory { Name = "COFFEE" } };
             var validation = _DomainService.IsValidNewCategory(newCategory, systemCategoies);
 
@@ -41,7 +41,7 @@ namespace ExpensesTracker.Services.Tests.Budget
         [TestCategory("UnitTest")]
         public void CantAddDuplicateMissingTrimName()
         {
-            var newCategory = ExpenseCategoryFactory.DefaultCategory(" Coffee ");
+            var newCategory = ExpensesTrackerFactory.DefaultCategory(" Coffee ");
             var systemCategoies = new List<ExpenseCategory>() { new ExpenseCategory { Name = "COFFEE" } };
             var validation = _DomainService.IsValidNewCategory(newCategory, systemCategoies);
 
@@ -52,7 +52,7 @@ namespace ExpensesTracker.Services.Tests.Budget
         [TestCategory("UnitTest")]
         public void CustomCategoryMustHaveOwner()
         {
-            var newCategory = ExpenseCategoryFactory.CustomCategory("Coffee",string.Empty);
+            var newCategory = ExpensesTrackerFactory.CustomCategory("Coffee",string.Empty);
             var validation = _DomainService.IsValidNewCustomCategory(newCategory, null);
 
             Assert.IsFalse(validation.IsValid());

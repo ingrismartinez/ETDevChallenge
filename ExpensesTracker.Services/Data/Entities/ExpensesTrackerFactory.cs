@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExpensesTracker.Services.Data.Entities
 {
-    public static class ExpenseCategoryFactory
+    public static class ExpensesTrackerFactory
     {
         public static ExpenseCategory DefaultCategory(string categoryName)
         {

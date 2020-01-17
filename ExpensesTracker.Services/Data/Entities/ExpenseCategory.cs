@@ -11,5 +11,6 @@ namespace ExpensesTracker.Services.Entities
         public string Name { get; set; }
         public bool IsDefault { get; set; }
         public string OwnerId { get; set; }
+        public virtual ICollection<BudgetDetail> BudgetDetails { get; set; }
     }
 }

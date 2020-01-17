@@ -14,7 +14,7 @@ namespace ExpensesTracker.Services.Data.Maps
         {
             builder.ToTable("ExpenseCategory", "dbo");
             builder.HasKey(t => t.UId);
-            builder.Property(c => c.UId).HasColumnName("UId").IsRequired();
+            builder.Property(c => c.UId).HasColumnName("UId").IsRequired().ValueGeneratedOnAdd();
             builder.Property(c => c.Name).HasColumnName("Name").IsRequired();
             builder.Property(c => c.IsDefault).HasColumnName("IsDefault").IsRequired();
             builder.Property(c => c.OwnerId).HasColumnName("OwnerId");

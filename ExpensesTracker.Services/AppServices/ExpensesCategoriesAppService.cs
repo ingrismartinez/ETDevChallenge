@@ -24,7 +24,7 @@ namespace ExpensesTracker.Services.AppServices
         public async Task<ResponseBase> CreateDefaultCategory(ExpenseCategoryRequest request)
         {
             var categories = await _context.ExpenseCategory.Where(c => c.IsDefault == true).ToListAsync();
-            var newCategory = ExpenseCategoryFactory.DefaultCategory(request.CategoryName);
+            var newCategory = ExpensesTrackerFactory.DefaultCategory(request.CategoryName);
 
             var validation = _domainService.IsValidNewCategory(newCategory, categories);
             if(validation.IsValid())
@@ -39,7 +39,7 @@ namespace ExpensesTracker.Services.AppServices
         {
             var userId = request.UserId;
             var categories = await _context.ExpenseCategory.Where(c => c.IsDefault == true || c.OwnerId == userId).ToListAsync();
-            var newCategory = ExpenseCategoryFactory.CustomCategory(request.CategoryName, userId);
+            var newCategory = ExpensesTrackerFactory.CustomCategory(request.CategoryName, userId);
 
             var validation = _domainService.IsValidNewCustomCategory(newCategory, categories);
             if (validation.IsValid())
