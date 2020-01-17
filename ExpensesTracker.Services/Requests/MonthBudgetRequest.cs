@@ -12,6 +12,6 @@ namespace ExpensesTracker.Services.Requests
         public string Currency { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public IEnumerable<BudgetCategoryDto> BudgetCategory { get; set; }
+        public IEnumerable<BudgetCategoryDto> BudgetCategories { get; set; }
     }
 }

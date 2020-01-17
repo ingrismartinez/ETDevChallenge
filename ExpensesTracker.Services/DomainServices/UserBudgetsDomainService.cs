@@ -50,6 +50,22 @@ namespace ExpensesTracker.Services.DomainServices
             {
                 return new DomainValidation(Messages.BudgetMustHaveAnOwner);
             }
+            if (newBudget.BudgetDetails==null || !newBudget.BudgetDetails.Any())
+            {
+                return new DomainValidation(Messages.BudgetMustContainsExpensesCategories);
+            }
+            if (newBudget.BudgetDetails.Any(c => c.ExpenseCategory == null))
+            {
+                return new DomainValidation(Messages.ExpensesCategoriesMustExists);
+            }
+            if (newBudget.BudgetDetails.Sum(c => c.Amount)<=0)
+            {
+                return new DomainValidation(Messages.ExpensesPercentMustBeGreaterThanCero);
+            }
+            if (newBudget.BudgetDetails.Sum(c => c.Percentage) > 1)
+            {
+                return new DomainValidation(Messages.ExpesesCategoriesExceed100Percent);
+            }
             return new DomainValidation();
         }
     }

@@ -34,7 +34,7 @@ namespace ExpensesTracker.Services.Data.Entities
                 Amount = request.Amount,
                 
             };
-            budget.BudgetDetails = request.BudgetCategory?.Select(c => new BudgetDetail
+            budget.BudgetDetails = request.BudgetCategories?.Select(c => new BudgetDetail
             {
                 CategoryId = c.CategoryId,
                 UserBudget = budget,
