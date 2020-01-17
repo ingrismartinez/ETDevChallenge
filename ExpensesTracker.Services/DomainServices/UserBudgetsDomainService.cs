@@ -43,5 +43,14 @@ namespace ExpensesTracker.Services.DomainServices
 
             return budget;
         }
+
+        public DomainValidation IsValidNewUserBudget(UserBudget newBudget)
+        {
+            if (string.IsNullOrWhiteSpace(newBudget.UserId))
+            {
+                return new DomainValidation(Messages.BudgetMustHaveAnOwner);
+            }
+            return new DomainValidation();
+        }
     }
 }

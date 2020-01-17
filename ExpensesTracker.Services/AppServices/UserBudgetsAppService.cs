@@ -23,6 +23,7 @@ namespace ExpensesTracker.Services.AppServices
             _budgetDomainService = budgetDomainService;
 
         }
+
         public async Task<MonthBudgetResponse> GetMyCurrentMonthBudget(UserRequest request)
         {
             var userId = request.UserId;
@@ -31,7 +32,7 @@ namespace ExpensesTracker.Services.AppServices
 
             _budgetDomainService.FindCurrentMonthDates(out monthBeginningDate, out monthEndingDate);
 
-            var userBudgets = await _context.UserBudget.Where(c => c.UserId == userId).ToListAsync();
+            var userBudgets = await _context.UserBudget.Where(c => c.UserId == userId).Include(c=>nameof(UserBudget.BudgetDetails)).ToListAsync();
             var currentMonth = userBudgets.FirstOrDefault(c =>
                            c.StartDate >= monthBeginningDate && c.EndDate <= monthEndingDate);
             var categories = await _context.ExpenseCategory.Where(c => c.IsDefault || c.OwnerId == userId).ToListAsync();
@@ -46,7 +47,23 @@ namespace ExpensesTracker.Services.AppServices
 
         }
 
-        private static MonthBudgetResponse MapUserBudgetToResponse(UserBudget currentMonth, bool defaultTemplate)
+        public async Task<MonthBudgetResponse> AddNewUserBudget(MonthBudgetRequest request)
+        {
+
+            var categories = await _context.ExpenseCategory.Where(c => c.IsDefault || c.OwnerId == request.UserId).ToListAsync();
+            var newBudget = ExpensesTrackerFactory.CreateNewBudget(request, categories);
+
+            var validation = _budgetDomainService.IsValidNewUserBudget(newBudget);
+            
+            if(validation.IsValid())
+            {
+                _context.UserBudget.Add(newBudget);
+                await _context.SaveChangesAsync();
+            }
+            return MapUserBudgetToResponse(newBudget, false, validation);
+        }
+
+        private static MonthBudgetResponse MapUserBudgetToResponse(UserBudget currentMonth, bool defaultTemplate,DomainValidation validation =null)
         {
             return new MonthBudgetResponse
             {
@@ -68,7 +85,7 @@ namespace ExpensesTracker.Services.AppServices
             {
                 CategoryId = c.CategoryId,
                 Name = c.ExpenseCategory?.Name,
-                Percentaje= c.Percentage,
+                Percentage= c.Percentage,
             });
         }
     }

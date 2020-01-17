@@ -1,4 +1,5 @@
 ﻿using ExpensesTracker.Services.Entities;
+using ExpensesTracker.Services.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,29 @@ namespace ExpensesTracker.Services.Data.Entities
         public static string MonthName(this DateTime date)
         {
             return $"{date.ToString("MMMM")} {date.Year}";
+        }
+
+        public static UserBudget CreateNewBudget(MonthBudgetRequest request,IEnumerable<ExpenseCategory> categories)
+        {
+            var budget = new UserBudget
+            {
+                UserId = request.UserId,
+                CurrencySign = request.Currency??"$",
+                StartDate= request.StartDate,
+                EndDate = request.EndDate,
+                Amount = request.Amount,
+                
+            };
+            budget.BudgetDetails = request.BudgetCategory?.Select(c => new BudgetDetail
+            {
+                CategoryId = c.CategoryId,
+                UserBudget = budget,
+                ExpenseCategory = categories?.FirstOrDefault(d => d.UId == c.CategoryId),
+                Percentage = c.Percentage / 100,
+                Amount = request.Amount * (c.Percentage / 100)
+            }).ToList();
+
+            return budget;
         }
     }
 }

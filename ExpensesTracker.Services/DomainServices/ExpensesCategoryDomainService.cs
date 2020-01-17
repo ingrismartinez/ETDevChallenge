@@ -15,7 +15,7 @@ namespace ExpensesTracker.Services.DomainServices
                 return new DomainValidation(Messages.InvalidCategoryName);
             }
             newCategory.Name = newCategory.Name.Trim();
-            var existing = systemCategories.FirstOrDefault(c => c.Name.ToUpper() == newCategory.Name.ToUpper()) != null;
+            var existing = systemCategories?.FirstOrDefault(c => c.Name.ToUpper() == newCategory.Name.ToUpper()) != null;
             if(existing)
             {
                 return new DomainValidation(Messages.CantAddDuplicateCategory);

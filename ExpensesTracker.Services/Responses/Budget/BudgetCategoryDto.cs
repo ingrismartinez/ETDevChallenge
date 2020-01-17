@@ -9,6 +9,6 @@ namespace ExpensesTracker.Services.Responses.Budget
     {
         public int CategoryId { get; set; }
         public string Name { get; set; }
-        public decimal Percentaje { get; set; }
+        public decimal Percentage { get; set; }
     }
 }
