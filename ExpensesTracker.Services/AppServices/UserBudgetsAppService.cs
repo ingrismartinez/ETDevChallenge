@@ -32,7 +32,7 @@ namespace ExpensesTracker.Services.AppServices
 
             _budgetDomainService.FindCurrentMonthDates(out monthBeginningDate, out monthEndingDate);
 
-            var userBudgets = await _context.UserBudget.Where(c => c.UserId == userId).Include(c=>nameof(UserBudget.BudgetDetails)).ToListAsync();
+            var userBudgets = await _context.UserBudget.Where(c => c.UserId == userId).ToListAsync();
             var currentMonth = userBudgets.FirstOrDefault(c =>
                            c.StartDate >= monthBeginningDate && c.EndDate <= monthEndingDate);
             var categories = await _context.ExpenseCategory.Where(c => c.IsDefault || c.OwnerId == userId).ToListAsync();
