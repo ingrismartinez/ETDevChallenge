@@ -40,6 +40,31 @@ namespace ExpensesTracker.Services.DomainServices
                 }
 
             }
+            else
+            {
+                return validation;
+            }
+            return new DomainValidation();
+        }
+
+        public DomainValidation IsValidToRemove(ExpenseCategory category, List<UserBudget> userBudget)
+        {
+            if(category==null)
+            {
+                return new DomainValidation(Messages.CategoryCantBeDelete);
+            }
+            if(category.IsDefault)
+            {
+                return new DomainValidation(Messages.SystemDefaultCategoryCantBeDelete);
+            }
+            if((userBudget?.Any()).Value)
+            {
+                var budgetCategories = userBudget.SelectMany(C => C.BudgetDetails).Where(C => C.CategoryId == category.UId);
+                if((budgetCategories?.Any()).Value)
+                {
+                    return new DomainValidation(Messages.BudgedCategoryCantBeDeleted);
+                }
+            }
             return new DomainValidation();
         }
     }

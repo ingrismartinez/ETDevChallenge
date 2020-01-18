@@ -38,7 +38,7 @@ namespace ExpensesTracker.Services.AppServices
         internal async Task<ActionResult<ResponseBase>> CreateCustomCategory(ExpenseCategoryRequest request)
         {
             var userId = request.UserId;
-            var categories = await _context.ExpenseCategory.Where(c => c.IsDefault == true || c.OwnerId == userId).ToListAsync();
+            var categories = await _context.ExpenseCategory.Where(c => c.IsDefault || c.OwnerId == userId).ToListAsync();
             var newCategory = ExpensesTrackerFactory.CustomCategory(request.CategoryName, userId);
 
             var validation = _domainService.IsValidNewCustomCategory(newCategory, categories);
@@ -46,6 +46,19 @@ namespace ExpensesTracker.Services.AppServices
             {
                 _context.ExpenseCategory.Add(newCategory);
                 int result = await _context.SaveChangesAsync();
+            }
+            return new ResponseBase { ValidationMessage = validation.ValidationErrorMessage };
+        }
+
+        internal async Task<ActionResult<ResponseBase>> DeleteCustomCategory(int id, string userId)
+        {
+            var category = await _context.ExpenseCategory.FirstOrDefaultAsync(c => !c.IsDefault && c.OwnerId == userId && c.UId == id);
+            var userBudget = await _context.UserBudget.Where(c => c.UserId == userId).ToListAsync();
+            var validation = _domainService.IsValidToRemove(category, userBudget);
+            if(validation.IsValid())
+            {
+                _context.ExpenseCategory.Remove(category);
+                await _context.SaveChangesAsync();
             }
             return new ResponseBase { ValidationMessage = validation.ValidationErrorMessage };
         }

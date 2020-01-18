@@ -30,7 +30,7 @@ namespace ExpensesTracker.Services
         [HttpGet]
         public async Task<ActionResult<MonthBudgetResponse>> GetUserBudget(string userId)
         {
-            return await _userBudgetAppService.GetMyCurrentMonthBudget(new UserRequest { UserId = userId });
+            return Ok(await _userBudgetAppService.GetMyCurrentMonthBudget(new UserRequest { UserId = userId }));
         }
 
         // GET: api/UserBudgets/5
@@ -47,48 +47,14 @@ namespace ExpensesTracker.Services
             return userBudget;
         }
 
-        // PUT: api/UserBudgets/5
+        // POST: api/UserBudgets/add-budget
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserBudget(int id, UserBudget userBudget)
+        [HttpPost("add-budget")]
+        public async Task<ActionResult<MonthBudgetResponse>> PostUserBudget(MonthBudgetRequest userBudget)
         {
-            if (id != userBudget.UId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(userBudget).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserBudgetExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/UserBudgets
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<UserBudget>> PostUserBudget(UserBudget userBudget)
-        {
-            _context.UserBudget.Add(userBudget);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUserBudget", new { id = userBudget.UId }, userBudget);
+            var result = await _userBudgetAppService.AddNewUserBudget(userBudget);
+            return Ok(result);
         }
 
         // DELETE: api/UserBudgets/5
@@ -107,9 +73,5 @@ namespace ExpensesTracker.Services
             return userBudget;
         }
 
-        private bool UserBudgetExists(int id)
-        {
-            return _context.UserBudget.Any(e => e.UId == id);
-        }
     }
 }

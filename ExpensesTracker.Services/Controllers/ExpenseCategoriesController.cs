@@ -25,12 +25,6 @@ namespace ExpensesTracker.Services.Controllers
 
         }
         
-        // POST: api/ExpenseCategories
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
         // POST: api/ExpenseCategories/add-default
         [HttpPost("add-default")]
         public async Task<ActionResult<ResponseBase>> AddDefault([FromBody] ExpenseCategoryRequest request)
@@ -44,10 +38,11 @@ namespace ExpensesTracker.Services.Controllers
             return await _expensesCategoriesAppService.CreateCustomCategory(request);
         }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // DELETE: api/delete-custom/5
+        [HttpDelete("{id}/{userId}")]
+        public async Task<ActionResult<ResponseBase>> Delete(int id,string userId)
         {
+            return await _expensesCategoriesAppService.DeleteCustomCategory(id,userId);
         }
     }
 }
