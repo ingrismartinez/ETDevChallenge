@@ -2,6 +2,7 @@
 using ExpensesTracker.Services.DomainServices;
 using ExpensesTracker.Services.Requests;
 using ExpensesTracker.Services.Responses;
+using ExpensesTracker.Services.Responses.Budget;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,7 +22,7 @@ namespace ExpensesTracker.Services.AppServices
             _context = context ?? throw new ArgumentNullException("context");
             _domainService = new ExpensesCategoryDomainService();
         }
-        public async Task<ResponseBase> CreateDefaultCategory(ExpenseCategoryRequest request)
+        public async Task<NewCategoryResponse> CreateDefaultCategory(ExpenseCategoryRequest request)
         {
             var categories = await _context.ExpenseCategory.Where(c => c.IsDefault == true).ToListAsync();
             var newCategory = ExpensesTrackerFactory.DefaultCategory(request.CategoryName);
@@ -31,11 +32,12 @@ namespace ExpensesTracker.Services.AppServices
             {
                 _context.ExpenseCategory.Add(newCategory);
                 int result = await _context.SaveChangesAsync();
+                return new NewCategoryResponse { CategoryId = newCategory.UId };
             }
-            return new ResponseBase { ValidationMessage = validation.ValidationErrorMessage };
+            return new NewCategoryResponse { ValidationMessage = validation.ValidationErrorMessage };
         }
 
-        internal async Task<ActionResult<ResponseBase>> CreateCustomCategory(ExpenseCategoryRequest request)
+        internal async Task<ActionResult<NewCategoryResponse>> CreateCustomCategory(ExpenseCategoryRequest request)
         {
             var userId = request.UserId;
             var categories = await _context.ExpenseCategory.Where(c => c.IsDefault || c.OwnerId == userId).ToListAsync();
@@ -46,8 +48,9 @@ namespace ExpensesTracker.Services.AppServices
             {
                 _context.ExpenseCategory.Add(newCategory);
                 int result = await _context.SaveChangesAsync();
+                return new NewCategoryResponse { CategoryId = newCategory.UId, UserId = newCategory.OwnerId };
             }
-            return new ResponseBase { ValidationMessage = validation.ValidationErrorMessage };
+            return new NewCategoryResponse { ValidationMessage = validation.ValidationErrorMessage };
         }
 
         internal async Task<ActionResult<ResponseBase>> DeleteCustomCategory(int id, string userId)

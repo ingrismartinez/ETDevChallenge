@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ExpensesTracker.Services.AppServices;
 using ExpensesTracker.Services.Requests;
 using ExpensesTracker.Services.Responses;
+using ExpensesTracker.Services.Responses.Budget;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,13 +28,13 @@ namespace ExpensesTracker.Services.Controllers
         
         // POST: api/ExpenseCategories/add-default
         [HttpPost("add-default")]
-        public async Task<ActionResult<ResponseBase>> AddDefault([FromBody] ExpenseCategoryRequest request)
+        public async Task<ActionResult<NewCategoryResponse>> AddDefault([FromBody] ExpenseCategoryRequest request)
         {
            return await _expensesCategoriesAppService.CreateDefaultCategory(request);
         }
         // POST: api/ExpenseCategories/add-custom
         [HttpPost("add-custom")]
-        public async Task<ActionResult<ResponseBase>> AddCustom([FromBody] ExpenseCategoryRequest request)
+        public async Task<ActionResult<NewCategoryResponse>> AddCustom([FromBody] ExpenseCategoryRequest request)
         {
             return await _expensesCategoriesAppService.CreateCustomCategory(request);
         }
