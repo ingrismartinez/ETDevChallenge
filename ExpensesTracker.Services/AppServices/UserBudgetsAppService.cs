@@ -60,7 +60,7 @@ namespace ExpensesTracker.Services.AppServices
                 _context.UserBudget.Add(newBudget);
                 await _context.SaveChangesAsync();
             }
-            return MapUserBudgetToResponse(newBudget, false, validation);
+            return MapUserBudgetToResponse(newBudget, !validation.IsValid(), validation);
         }
 
         private static MonthBudgetResponse MapUserBudgetToResponse(UserBudget currentMonth, bool defaultTemplate,DomainValidation validation =null)
@@ -68,14 +68,19 @@ namespace ExpensesTracker.Services.AppServices
             return new MonthBudgetResponse
             {
                 IsProposedBudget = defaultTemplate,
+                
                 Budget = new Responses.BudgetDto
                 {
+                    UserId = currentMonth.UserId,
                     Amount = currentMonth.Amount,
                     Currency = currentMonth.CurrencySign,
                     Year = currentMonth.EndDate.Year,
                     Name = currentMonth.StartDate.MonthName(),
+                    StartDate= currentMonth.StartDate,
+                    EndDate =currentMonth.EndDate,
                     BudgetCategory = MapBudgetCategories(currentMonth)
-                }
+                },
+                ValidationMessage = validation?.ValidationErrorMessage
             };
         }
 
