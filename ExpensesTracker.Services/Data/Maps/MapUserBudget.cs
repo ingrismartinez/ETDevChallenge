@@ -14,6 +14,6 @@ internal class MapUserBudget : IEntityTypeConfiguration<UserBudget>
         builder.Property(c => c.Amount).HasColumnName("Amount").IsRequired();
         builder.Property(c => c.CurrencySign).HasColumnName("Currency").IsRequired();
         builder.Property(c => c.UserId).HasColumnName("IdOwner").IsRequired();
-        builder.HasMany(c => c.BudgetDetails).WithOne(c=>c.UserBudget);
+        builder.HasMany(c => c.BudgetDetails).WithOne(c=>c.UserBudget).HasForeignKey(c=>c.UId);
     }
 }
