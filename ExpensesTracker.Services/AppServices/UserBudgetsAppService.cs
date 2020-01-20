@@ -35,7 +35,7 @@ namespace ExpensesTracker.Services.AppServices
 
             if(byDateRange)
             {
-                expensesquery.Where(c => c.BudgetCategory.UserBudget.StartDate >= startDate && c.BudgetCategory.UserBudget.EndDate <= endDate);
+                expensesquery = expensesquery.Where(c => c.BudgetCategory.UserBudget.StartDate >= startDate && c.BudgetCategory.UserBudget.EndDate <= endDate);
             }
               var expenses = await expensesquery.ToListAsync();
 
