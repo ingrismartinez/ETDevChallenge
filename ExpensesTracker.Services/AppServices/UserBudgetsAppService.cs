@@ -25,6 +25,23 @@ namespace ExpensesTracker.Services.AppServices
 
         }
 
+        internal async Task<List<ExpenseReportDto>> GetExpensesReport(string userId, DateTime startDate, DateTime endDate)
+        {
+            var byDateRange = startDate != DateTime.MinValue && endDate!= DateTime.MinValue && startDate != endDate;
+
+            var expensesquery = _context.Expenses.Include(c => c.BudgetCategory).ThenInclude(c => c.ExpenseCategory)
+                .Include(c => c.BudgetCategory).ThenInclude(c => c.UserBudget)
+                .Where(c => c.BudgetCategory.UserBudget.UserId == userId);
+
+            if(byDateRange)
+            {
+                expensesquery.Where(c => c.BudgetCategory.UserBudget.StartDate >= startDate && c.BudgetCategory.UserBudget.EndDate <= endDate);
+            }
+              var expenses = await expensesquery.ToListAsync();
+
+            return MapExpenseReport(expenses);
+        }
+        
         public async Task<MonthBudgetResponse> GetMyCurrentMonthBudget(UserRequest request)
         {
             var userId = request.UserId;
@@ -167,6 +184,29 @@ namespace ExpensesTracker.Services.AppServices
                 Expenses = expenses.Select(newExpense => ExpenseToDto(newExpense)).ToList()
 
             };
+        }
+
+        private List<ExpenseReportDto> MapExpenseReport(List<ExpenseTransaction> expenses)
+        {
+            return expenses.Select(c => new ExpenseReportDto
+            {
+                BudgetAmount = c.BudgetCategory.UserBudget.Amount,
+                BudgetEndDate = c.BudgetCategory.UserBudget.EndDate,
+                BudgetStartDate = c.BudgetCategory.UserBudget.StartDate,
+                BudgetId = c.BudgetCategory.UserBudget.UId.ToString(),
+                BudgetName = c.BudgetCategory.UserBudget.StartDate.MonthName(),
+                CategoryBudgetAmount = c.BudgetCategory.Amount,
+                CategoryPercentage = c.BudgetCategory.Percentage * 100,
+                CategoryId = c.BudgetCategoryId.ToString(),
+                CategoryName = c.BudgetCategory.ExpenseCategory.Name,
+                ExpenseId = c.UId.ToString(),
+                Description = c.Description,
+                ExpendedValue = c.Value,
+                TransactionDate = c.TransactionDate,
+                CategoryExpendedAmount = c.BudgetCategory.Expenses.Sum(c => c.Value),
+                CategoryExpendedPercentage = c.BudgetCategory.Amount > 0 ? c.BudgetCategory.Expenses.Sum(c => c.Value) / c.BudgetCategory.Amount : 0
+
+            }).ToList();
         }
 
         public async Task<MonthBudgetResponse> AddNewUserBudget(MonthBudgetRequest request)

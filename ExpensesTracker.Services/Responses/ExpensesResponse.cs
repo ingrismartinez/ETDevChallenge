@@ -18,4 +18,16 @@ namespace ExpensesTracker.Services.Responses
         public decimal ExpendedValue { get; set; }
         public DateTime TransactionDate { get; set; }
     }
+    public class ExpenseReportDto:ExpenseDto
+    {
+        public string CategoryName { get; set; }
+        public decimal BudgetAmount { get; set; }
+        public decimal CategoryBudgetAmount { get; set; }
+        public decimal CategoryExpendedAmount { get; set; }
+        public decimal CategoryPercentage { get; set; }
+        public decimal CategoryExpendedPercentage { get; set; }
+        public string BudgetName { get; set; }
+        public DateTime BudgetStartDate { get; set; }
+        public DateTime BudgetEndDate { get; set; }
+    }
 }
