@@ -32,21 +32,7 @@ namespace ExpensesTracker.Services
         {
             return Ok(await _userBudgetAppService.GetMyCurrentMonthBudget(new UserRequest { UserId = userId }));
         }
-
-        // GET: api/UserBudgets/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserBudget>> GetUserBudget(int id)
-        {
-            var userBudget = await _context.UserBudget.FindAsync(id);
-
-            if (userBudget == null)
-            {
-                return NotFound();
-            }
-
-            return userBudget;
-        }
-
+        
         // POST: api/UserBudgets/add-budget
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
@@ -57,21 +43,6 @@ namespace ExpensesTracker.Services
             return Ok(result);
         }
 
-        // DELETE: api/UserBudgets/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<UserBudget>> DeleteUserBudget(int id)
-        {
-            var userBudget = await _context.UserBudget.FindAsync(id);
-            if (userBudget == null)
-            {
-                return NotFound();
-            }
-
-            _context.UserBudget.Remove(userBudget);
-            await _context.SaveChangesAsync();
-
-            return userBudget;
-        }
 
     }
 }

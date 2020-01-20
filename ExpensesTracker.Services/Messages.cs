@@ -14,6 +14,8 @@ namespace ExpensesTracker.Services
         internal static readonly string CategoryCantBeDelete= "Category can't be deleted";
         internal static readonly string SystemDefaultCategoryCantBeDelete="System Categories can't be deleted";
         internal static readonly string BudgedCategoryCantBeDeleted= "Budged Category can't be unliked from budget";
+        internal static readonly string CantEditExpense="Expense can't be updated";
+        internal static readonly string InvalidDeleteExpense="Invalid delete expense";
         public static string InvalidCategoryName = "Invalid Category Name";
         public static string CantAddDuplicateCategory = "Can't add duplicate category";
         public static string CustomCategoriesMustHaveOwner = "Custom Category with invalid owner";
@@ -22,5 +24,7 @@ namespace ExpensesTracker.Services
         public static string BudgetMustContainsExpensesCategories = "Budget missing expenses categories";
 
         public static string CategoriesNameMustBeUnique = "Category is already created";
+
+        public static string CannotAddExpenses = "Can not add new buy";
     }
 }

@@ -14,5 +14,15 @@ namespace ExpensesTracker.Services.Entities
         public decimal Amount { get; set; }
         public virtual ExpenseCategory ExpenseCategory { get; set; }
         public virtual UserBudget UserBudget { get; set; }
+        public virtual ICollection<ExpenseTransaction> Expenses { get; set; }
+
+        internal void AddExpense(ExpenseTransaction newExpense)
+        {
+            if(Expenses==null)
+            {
+                Expenses = new List<ExpenseTransaction>();
+            }
+            Expenses.Add(newExpense);
+        }
     }
 }

@@ -45,5 +45,19 @@ namespace ExpensesTracker.Services.Data.Entities
 
             return budget;
         }
+
+        internal static ExpenseTransaction CreateNewExpense(BudgetDetail budgetCategory, string description, decimal expendedValue, DateTime transactionDate)
+        {
+            var newExpense = new ExpenseTransaction
+            {
+                BudgetCategoryId = budgetCategory.UId,
+                BudgetCategory = budgetCategory,
+                Description = description,
+                Value = expendedValue,
+                TransactionDate = transactionDate,
+            };
+            budgetCategory.AddExpense(newExpense);
+            return newExpense;
+        }
     }
 }

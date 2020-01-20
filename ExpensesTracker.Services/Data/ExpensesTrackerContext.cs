@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ExpensesTracker.Services.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ExpensesTracker.Services.Data.Maps;
 
 public class ExpensesTrackerContext : DbContext
@@ -14,17 +9,17 @@ public class ExpensesTrackerContext : DbContext
     {
     }
 
-    public DbSet<ExpensesTracker.Services.Entities.UserBudget> UserBudget { get; set; }
-    public DbSet<ExpensesTracker.Services.Entities.BudgetDetail> BudgetDetail { get; set; }
-    public DbSet<ExpensesTracker.Services.Entities.ExpenseCategory> ExpenseCategory { get; set; }
+    public DbSet<UserBudget> UserBudget { get; set; }
+    public DbSet<BudgetDetail> BudgetDetail { get; set; }
+    public DbSet<ExpenseCategory> ExpenseCategory { get; set; }
+    public DbSet<ExpenseTransaction> Expenses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //Write Fluent API configurations here
-
         //Property Configurations
         modelBuilder.ApplyConfiguration(new MapUserBudget());
         modelBuilder.ApplyConfiguration(new MapBudgetDetail());
         modelBuilder.ApplyConfiguration(new MapExpenseCategory());
+        modelBuilder.ApplyConfiguration(new MapExpenseTransaction());
     }
 }
