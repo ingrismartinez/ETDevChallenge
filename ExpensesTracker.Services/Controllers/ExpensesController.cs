@@ -9,6 +9,7 @@ namespace ExpensesTracker.Services.Controllers
 {
 
     [Route("api/[controller]")]
+    [ApiController]
     public class ExpensesController : ControllerBase
     {
         private readonly ExpensesTrackerContext _context;
@@ -18,25 +19,25 @@ namespace ExpensesTracker.Services.Controllers
             _context = context;
             _userBudgetAppService = new UserBudgetsAppService(_context, new UserBudgetsDomainService());
         }
-        [HttpPost()]
+        [HttpPost("add")]
         public async Task<ActionResult<ExpensesResponse>> Post(ExpenseRequest userBudget)
         {
             var result = await _userBudgetAppService.AddNewExpense(userBudget);
             return Ok(result);
         }
-        [HttpPut()]
+        [HttpPut("edit")]
         public async Task<ActionResult<ExpensesResponse>> Put(ExpenseRequest userBudget)
         {
             var result = await _userBudgetAppService.EditExpense(userBudget);
             return Ok(result);
         }
-        [HttpDelete()]
+        [HttpDelete("delete")]
         public async Task<ActionResult<ResponseBase>> Delete(ExpenseRequest userBudget)
         {
             var result = await _userBudgetAppService.DeleteExpense(userBudget.ExpenseId,userBudget.UserId);
             return Ok(result);
         }
-        [HttpGet()]
+        [HttpGet]
         public async Task<ActionResult<ExpensesResponse>> Get(string userId,int budgetId,int categoryId)
         {
 

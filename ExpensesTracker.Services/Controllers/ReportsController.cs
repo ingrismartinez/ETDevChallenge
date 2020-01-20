@@ -11,6 +11,7 @@ namespace ExpensesTracker.Services.Controllers
 {
 
     [Route("api/[controller]")]
+    [ApiController]
     public class ReportsController: ControllerBase
     {
         private readonly ExpensesTrackerContext _context;

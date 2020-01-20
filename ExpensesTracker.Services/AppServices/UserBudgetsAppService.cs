@@ -50,11 +50,11 @@ namespace ExpensesTracker.Services.AppServices
 
             _budgetDomainService.FindCurrentMonthDates(out monthBeginningDate, out monthEndingDate);
 
-            var userBudgets = await _context.UserBudget.Include(c=>c.BudgetDetails).Where(c => c.UserId == userId)
+            var userBudgets = await _context.BudgetDetail.Include(c=>c.UserBudget).Include(c=>c.Expenses).Include(c=>c.ExpenseCategory).Where(c => c.UserBudget.UserId == userId)
                 
                 .ToListAsync();
             var currentMonth = userBudgets.FirstOrDefault(c =>
-                           c.StartDate >= monthBeginningDate && c.EndDate <= monthEndingDate);
+                           c.UserBudget.StartDate >= monthBeginningDate && c.UserBudget.EndDate <= monthEndingDate).UserBudget;
             var categories = await _context.ExpenseCategory.Where(c => c.IsDefault || c.OwnerId == userId).ToListAsync();
 
             var defaultTemplate = currentMonth == null;
@@ -138,8 +138,8 @@ namespace ExpensesTracker.Services.AppServices
         {
             var userId = userBudget.UserId;
             var budgetCategoryId = Convert.ToInt32(userBudget.CategoryId);
-            var budgetCategory =
-                _context.BudgetDetail.Include(c => c.UserBudget).FirstOrDefault(c => c.UId == budgetCategoryId && c.UserBudget.UserId == userId);
+            var budgetCategory = await
+                _context.BudgetDetail.Include(c => c.UserBudget).FirstOrDefaultAsync(c => c.UId == budgetCategoryId && c.UserBudget.UserId == userId);
             if (budgetCategory != null)
             {
                 var newExpense = 
@@ -158,15 +158,15 @@ namespace ExpensesTracker.Services.AppServices
         {
             return new ExpensesResponse
             {
-                Expenses = new List<ExpenseDto>
+                Expenses = new List<Responses.ExpenseDto>
                 { ExpenseToDto(newExpense)
                 }
             };
         }
 
-        private static ExpenseDto ExpenseToDto(ExpenseTransaction newExpense)
+        private static Responses.ExpenseDto ExpenseToDto(ExpenseTransaction newExpense)
         {
-            return new ExpenseDto
+            return new Responses.ExpenseDto
             {
                 ExpenseId = newExpense.UId.ToString(),
                 CategoryId = newExpense.BudgetCategoryId.ToString(),
@@ -251,9 +251,11 @@ namespace ExpensesTracker.Services.AppServices
             return currentMonth.BudgetDetails?.Select(c => new BudgetCategoryDto
             {
                 CategoryId = c.CategoryId,
+                Id = c.UId,
                 Name = c.ExpenseCategory?.Name,
                 Percentage= c.Percentage,
                 Amount = c.Amount,
+                Expenses = c.Expenses?.Select(c=>new Expense{ Description = c.Description,TransactionDate = c.TransactionDate,Value = c.Value}).ToList(),
             });
         }
     }
