@@ -32,7 +32,7 @@ namespace ExpensesTracker.Services.Controllers
             return Ok(result);
         }
         [HttpDelete("delete")]
-        public async Task<ActionResult<ResponseBase>> Delete(ExpenseRequest userBudget)
+        public async Task<ActionResult<ResponseBase>> Delete([FromRoute]ExpenseRequest userBudget)
         {
             var result = await _userBudgetAppService.DeleteExpense(userBudget.ExpenseId,userBudget.UserId);
             return Ok(result);

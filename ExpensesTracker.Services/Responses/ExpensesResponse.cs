@@ -17,6 +17,7 @@ namespace ExpensesTracker.Services.Responses
         public string Description { get; set; }
         public decimal ExpendedValue { get; set; }
         public DateTime TransactionDate { get; set; }
+        public string UserId { get; set; }
     }
     public class ExpenseReportDto:ExpenseDto
     {

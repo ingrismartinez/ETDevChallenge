@@ -173,7 +173,8 @@ namespace ExpensesTracker.Services.AppServices
                 Description = newExpense.Description,
                 ExpendedValue = newExpense.Value,
                 TransactionDate = newExpense.TransactionDate,
-                BudgetId = newExpense.BudgetCategory?.BudgetId.ToString()
+                BudgetId = newExpense.BudgetCategory?.BudgetId.ToString(),
+                UserId = newExpense.BudgetCategory?.UserBudget?.UserId,
             };
         }
 
@@ -204,8 +205,8 @@ namespace ExpensesTracker.Services.AppServices
                 ExpendedValue = c.Value,
                 TransactionDate = c.TransactionDate,
                 CategoryExpendedAmount = c.BudgetCategory.Expenses.Sum(c => c.Value),
-                CategoryExpendedPercentage = c.BudgetCategory.Amount > 0 ? c.BudgetCategory.Expenses.Sum(c => c.Value) / c.BudgetCategory.Amount : 0
-
+                CategoryExpendedPercentage = c.BudgetCategory.Amount > 0 ? c.BudgetCategory.Expenses.Sum(c => c.Value) / c.BudgetCategory.Amount : 0,
+                UserId = c.BudgetCategory?.UserBudget?.UserId
             }).ToList();
         }
 
