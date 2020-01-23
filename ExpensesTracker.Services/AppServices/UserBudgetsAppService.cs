@@ -54,7 +54,7 @@ namespace ExpensesTracker.Services.AppServices
                 
                 .ToListAsync();
             var currentMonth = userBudgets.FirstOrDefault(c =>
-                           c.UserBudget.StartDate >= monthBeginningDate && c.UserBudget.EndDate <= monthEndingDate).UserBudget;
+                           c.UserBudget.StartDate >= monthBeginningDate && c.UserBudget.EndDate <= monthEndingDate)?.UserBudget;
             var categories = await _context.ExpenseCategory.Where(c => c.IsDefault || c.OwnerId == userId).ToListAsync();
 
             var defaultTemplate = currentMonth == null;

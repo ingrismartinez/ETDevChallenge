@@ -29,9 +29,9 @@ namespace ExpensesTracker.Services.DomainServices
                 CurrencySign = "$",
                 StartDate = monthBeginningDate,
                 EndDate = monthEndingDate,
-                Amount = 100,
+                Amount = 1000,
             };
-            var percentage = (decimal)100 / categories.Count;
+            var percentage = 0;
             budget.BudgetDetails = categories.Select(c => new BudgetDetail
             {
                 UserBudget = budget,
